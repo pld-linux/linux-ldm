@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
 Version:	0.0.8
 %define	docver	0.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/%{name}-%{version}.tar.bz2
@@ -29,6 +29,7 @@ dokumentacjê do partycji LDM.
 %build
 %{__make} \
 	CC="%{__cc}" \
+	CPP="%{__cxx}" \
 	OPT="%{rpmcflags} %{!?debug:-fomit-frame-pointer}" \
 	KERNEL="%{_kernelsrcdir}"
 
@@ -38,7 +39,7 @@ mv -f ldmutil/README README.ldmutil
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_bindir}
 
-install test/ldminfo $RPM_BUILD_ROOT%{_bindir}
+install test/ldminfo ldmutil/ldmutil $RPM_BUILD_ROOT%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
