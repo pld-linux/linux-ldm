@@ -1,7 +1,7 @@
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
 Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
-Version:	0.0.7
+Version:	0.0.8
 %define	docver	0.2
 Release:	1
 License:	GPL
