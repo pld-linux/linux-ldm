@@ -7,7 +7,9 @@ Release:	2
 License:	GPL
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/linux-ntfs/%{name}-%{version}.tar.bz2
+# Source0-md5:	bac558dc33633c746bb8c93f6861d231
 Source1:	http://dl.sourceforge.net/linux-ntfs/ldmdoc-%{docver}.tar.bz2
+# Source1-md5:	e232718f1d54bd7de87456d553c9f068
 Patch0:		%{name}-build.patch
 URL:		http://linux-ntfs.sf.net/
 BuildRequires:	libstdc++-devel
