@@ -1,5 +1,5 @@
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
-Summary(pl):	Narzêdzie do patycji LDM ("dynamicznych dysków" Windows 2000/XP)
+Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
 Version:	0.0.4
 Release:	1
@@ -14,19 +14,19 @@ URL:		http://linux-ntfs.sf.net/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Utility to dump or get information about LDM partitions. Contains LDM
-documentation.
+Utility to dump or get information about LDM partitions (Windows
+2000/XP "dynamic disks"). Contains LDM documentation.
 
 %description -l pl
 Narzêdzie do zrzucania danych i uzyskiwania informacji o partycjach
-LDM. Pakiet zawiera dokumentacjê do partycji LDM.
+LDM ("dynamicznych dysków" Windows 2000/XP). Pakiet zawiera
+dokumentacjê do partycji LDM.
 
 %prep
 %setup -q -a1
 %patch -p1
 
 %build
-#%{__make} -C test CC="%{__cc}" CFLAGS="%{rpmcflags}"
 %{__make} \
 	CC="%{__cc}" \
 	OPT="%{rpmcflags} %{!?debug:-fomit-frame-pointer}" \
