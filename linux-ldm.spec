@@ -7,8 +7,8 @@ License:	GPL
 Group:		Applications/System
 Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
-Source0:	http://prdownloads.sf.net/%{name}/%{name}-%{version}.tar.bz2
-Source1:	http://prdownloads.sf.net/%{name}/ldmdoc-0.1.tar.bz2
+Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/%{name}-%{version}.tar.bz2
+Source1:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/ldmdoc-0.1.tar.bz2
 Patch0:		%{name}-build.patch
 URL:		http://linux-ntfs.sf.net/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
