@@ -6,8 +6,8 @@ Version:	0.0.8
 Release:	2
 License:	GPL
 Group:		Applications/System
-Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/%{name}-%{version}.tar.bz2
-Source1:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/ldmdoc-%{docver}.tar.bz2
+Source0:	http://dl.sourceforge.net/linux-ntfs/%{name}-%{version}.tar.bz2
+Source1:	http://dl.sourceforge.net/linux-ntfs/ldmdoc-%{docver}.tar.bz2
 Patch0:		%{name}-build.patch
 URL:		http://linux-ntfs.sf.net/
 BuildRequires:	libstdc++-devel
