@@ -1,76 +1,51 @@
-diff -Nur linux-ldm-0.0.4.orig/Makefile.driver linux-ldm-0.0.4/Makefile.driver
---- linux-ldm-0.0.4.orig/Makefile.driver	Thu Jul 26 02:42:17 2001
-+++ linux-ldm-0.0.4/Makefile.driver	Sat Oct 13 01:26:57 2001
-@@ -15,7 +15,7 @@
- 
- LFLAGS	= -m elf_i386 -r
- 
--CFLAGS += -g
-+CFLAGS += $(OPT)
- CFLAGS += -DCONFIG_LDM_DEBUG
- 
- CFLAGS += -D__KERNEL__
-@@ -24,16 +24,13 @@
+diff -Nur linux-ldm-0.0.7.orig/Makefile linux-ldm-0.0.7/Makefile
+--- linux-ldm-0.0.7.orig/Makefile	Sun Jun 23 20:41:22 2002
++++ linux-ldm-0.0.7/Makefile	Sun Jul  7 12:05:34 2002
+@@ -9,8 +9,7 @@
+ # General compile flags
  
  CFLAGS += -Wall
- CFLAGS += -Wstrict-prototypes
+-CFLAGS += -g
 -CFLAGS += -O2
++CFLAGS += $(OPT)
+ CFLAGS += -D_FILE_OFFSET_BITS=64
+ 
+ # LDM compile flags
+@@ -23,11 +22,9 @@
+ 
+ CFLAGS += -D__KERNEL__
+ CFLAGS += -Wstrict-prototypes
 -CFLAGS += -fomit-frame-pointer
  CFLAGS += -fno-strict-aliasing
  CFLAGS += -pipe
  CFLAGS += -mpreferred-stack-boundary=2
 -CFLAGS += -march=$(shell uname -m)
  
- CFLAGS += -I.
--CFLAGS += -I/usr/src/linux/include
--CFLAGS += -I/usr/src/linux/fs/partitions
-+CFLAGS += -I$(KERNELSRC)/include
-+CFLAGS += -I$(KERNELSRC)/fs/partitions
+ # ld flags
  
- all:	$(SRC) $(HDR) $(OUT)
- 
-diff -Nur linux-ldm-0.0.4.orig/linux/fs/partitions/check.c linux-ldm-0.0.4/linux/fs/partitions/check.c
---- linux-ldm-0.0.4.orig/linux/fs/partitions/check.c	Sat Jun 16 22:29:38 2001
-+++ linux-ldm-0.0.4/linux/fs/partitions/check.c	Sat Oct 13 01:26:04 2001
-@@ -22,17 +22,35 @@
- 
- #include "check.h"
- 
-+#ifdef CONFIG_ACORN_PARTITION
- #include "acorn.h"
-+#endif
-+#ifdef CONFIG_AMIGA_PARTITION
- #include "amiga.h"
-+#endif
-+#ifdef CONFIG_ATARI_PARTITION
- #include "atari.h"
-+#endif
- #include "ldm.h"
-+#ifdef CONFIG_MAC_PARTITION
- #include "mac.h"
-+#endif
- #include "msdos.h"
-+#ifdef CONFIG_OSF_PARTITION
- #include "osf.h"
-+#endif
-+#ifdef CONFIG_SGI_PARTITION
- #include "sgi.h"
-+#endif
-+#ifdef CONFIG_SUN_PARTITION
- #include "sun.h"
-+#endif
-+#ifdef CONFIG_IBM_PARTITION
- #include "ibm.h"
-+#endif
-+#ifdef CONFIG_ULTRIX_PARTITION
- #include "ultrix.h"
-+#endif
- 
- extern int *blk_size[];
- 
-diff -Nur linux-ldm-0.0.4.orig/linux/fs/partitions/msdos.h linux-ldm-0.0.4/linux/fs/partitions/msdos.h
---- linux-ldm-0.0.4.orig/linux/fs/partitions/msdos.h	Thu Jan  1 01:00:00 1970
-+++ linux-ldm-0.0.4/linux/fs/partitions/msdos.h	Sat Oct 13 01:26:04 2001
+diff -Nur linux-ldm-0.0.7.orig/linux/fs/partitions/check.h linux-ldm-0.0.7/linux/fs/partitions/check.h
+--- linux-ldm-0.0.7.orig/linux/fs/partitions/check.h	Thu Jan  1 01:00:00 1970
++++ linux-ldm-0.0.7/linux/fs/partitions/check.h	Sun Jul  7 12:05:34 2002
+@@ -0,0 +1,16 @@
++/*
++ * add_partition adds a partitions details to the devices partition
++ * description.
++ */
++void add_gd_partition(struct gendisk *hd, int minor, int start, int size);
++
++typedef struct {struct page *v;} Sector;
++
++unsigned char *read_dev_sector(struct block_device *, unsigned long, Sector *);
++
++static inline void put_dev_sector(Sector p)
++{
++	page_cache_release(p.v);
++}
++
++extern int warn_no_part;
+diff -Nur linux-ldm-0.0.7.orig/linux/fs/partitions/msdos.h linux-ldm-0.0.7/linux/fs/partitions/msdos.h
+--- linux-ldm-0.0.7.orig/linux/fs/partitions/msdos.h	Thu Jan  1 01:00:00 1970
++++ linux-ldm-0.0.7/linux/fs/partitions/msdos.h	Sun Jul  7 12:05:34 2002
 @@ -0,0 +1,9 @@
 +/*
 + *  fs/partitions/msdos.h
@@ -78,29 +53,39 @@ diff -Nur linux-ldm-0.0.4.orig/linux/fs/partitions/msdos.h linux-ldm-0.0.4/linux
 +
 +#define MSDOS_LABEL_MAGIC		0xAA55
 +
-+int msdos_partition(struct gendisk *hd, kdev_t dev,
++int msdos_partition(struct gendisk *hd, struct block_device *bdev,
 +		    unsigned long first_sector, int first_part_minor);
 +
-diff -Nur linux-ldm-0.0.4.orig/test/Makefile linux-ldm-0.0.4/test/Makefile
---- linux-ldm-0.0.4.orig/test/Makefile	Thu Jul 26 03:37:45 2001
-+++ linux-ldm-0.0.4/test/Makefile	Sat Oct 13 01:26:04 2001
-@@ -11,18 +11,14 @@
- RM	= rm -f
- CP	= cp
+diff -Nur linux-ldm-0.0.7.orig/test/Makefile linux-ldm-0.0.7/test/Makefile
+--- linux-ldm-0.0.7.orig/test/Makefile	Sun Jun 23 20:41:22 2002
++++ linux-ldm-0.0.7/test/Makefile	Sun Jul  7 12:06:19 2002
+@@ -11,6 +11,7 @@
+ CFLAGS += -include extra.h
+ CFLAGS += -I$(KERNEL)/include
+ CFLAGS += -I$(KERNEL)/fs/partitions
++CFLAGS += -I../linux/fs/partitions
  
--CFLAGS += -g
--
-+CFLAGS += $(OPT)
- CFLAGS += -D__KERNEL__
+ all:	$(OUT)
  
- CFLAGS += -Wall
- CFLAGS += -Wstrict-prototypes
--CFLAGS += -O2
--CFLAGS += -fomit-frame-pointer
- CFLAGS += -fno-strict-aliasing
- CFLAGS += -pipe
- CFLAGS += -mpreferred-stack-boundary=2
--CFLAGS += -march=i386
- CFLAGS += -D_FILE_OFFSET_BITS=64
+--- linux-ldm-0.0.7/linux/fs/partitions/ldm.c.orig	Sun Jun 23 20:41:22 2002
++++ linux-ldm-0.0.7/linux/fs/partitions/ldm.c	Sun Jul  7 12:30:02 2002
+@@ -34,6 +34,8 @@
+ #include "check.h"
+ #include "msdos.h"
  
- all:	$(DEP) $(SRC) $(OUT)
++#undef memcpy
++
+ #ifdef CONFIG_LDM_EXPORT_SYMBOLS
+ #   define static
+ #endif
+--- linux-ldm-0.0.7/ldmutil/makefile.orig	Sun Jun 23 20:41:22 2002
++++ linux-ldm-0.0.7/ldmutil/makefile	Sun Jul  7 12:32:50 2002
+@@ -2,7 +2,7 @@
+ TARGET=ldmutil
+ SRC=main.cpp ldm_db.cpp diskio.cpp ldm_parse.cpp ptypenames.cpp
+ OBJ=$(SRC:%.cpp=%.o)
+-FLAGS=-O3
++FLAGS=$(OPT)
+ LDFLAGS=-Xlinker --strip-all
+ LIB=
+ INC=

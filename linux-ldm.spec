@@ -1,14 +1,16 @@
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
 Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
-Version:	0.0.4
+Version:	0.0.7
+%define	docver	0.2
 Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/%{name}-%{version}.tar.bz2
-Source1:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/ldmdoc-0.1.tar.bz2
+Source1:	ftp://ftp.sourceforge.net/pub/sourceforge/linux-ntfs/ldmdoc-%{docver}.tar.bz2
 Patch0:		%{name}-build.patch
 URL:		http://linux-ntfs.sf.net/
+BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -28,7 +30,9 @@ dokumentacjê do partycji LDM.
 %{__make} \
 	CC="%{__cc}" \
 	OPT="%{rpmcflags} %{!?debug:-fomit-frame-pointer}" \
-	KERNELSRC="%{_kernelsrcdir}"
+	KERNEL="%{_kernelsrcdir}"
+
+mv -f ldmutil/README README.ldmutil
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -36,13 +40,10 @@ install -d $RPM_BUILD_ROOT%{_bindir}
 
 install test/ldminfo $RPM_BUILD_ROOT%{_bindir}
 
-gzip -9nf AUTHORS ChangeLog README
-rm -rf ldm/CVS
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz ldm
+%doc AUTHORS ChangeLog README* ldmdoc
 %attr(755,root,root) %{_bindir}/*
