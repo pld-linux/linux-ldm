@@ -1,0 +1,106 @@
+diff -Nur linux-ldm-0.0.4.orig/Makefile.driver linux-ldm-0.0.4/Makefile.driver
+--- linux-ldm-0.0.4.orig/Makefile.driver	Thu Jul 26 02:42:17 2001
++++ linux-ldm-0.0.4/Makefile.driver	Sat Oct 13 01:26:57 2001
+@@ -15,7 +15,7 @@
+ 
+ LFLAGS	= -m elf_i386 -r
+ 
+-CFLAGS += -g
++CFLAGS += $(OPT)
+ CFLAGS += -DCONFIG_LDM_DEBUG
+ 
+ CFLAGS += -D__KERNEL__
+@@ -24,16 +24,13 @@
+ 
+ CFLAGS += -Wall
+ CFLAGS += -Wstrict-prototypes
+-CFLAGS += -O2
+-CFLAGS += -fomit-frame-pointer
+ CFLAGS += -fno-strict-aliasing
+ CFLAGS += -pipe
+ CFLAGS += -mpreferred-stack-boundary=2
+-CFLAGS += -march=$(shell uname -m)
+ 
+ CFLAGS += -I.
+-CFLAGS += -I/usr/src/linux/include
+-CFLAGS += -I/usr/src/linux/fs/partitions
++CFLAGS += -I$(KERNELSRC)/include
++CFLAGS += -I$(KERNELSRC)/fs/partitions
+ 
+ all:	$(SRC) $(HDR) $(OUT)
+ 
+diff -Nur linux-ldm-0.0.4.orig/linux/fs/partitions/check.c linux-ldm-0.0.4/linux/fs/partitions/check.c
+--- linux-ldm-0.0.4.orig/linux/fs/partitions/check.c	Sat Jun 16 22:29:38 2001
++++ linux-ldm-0.0.4/linux/fs/partitions/check.c	Sat Oct 13 01:26:04 2001
+@@ -22,17 +22,35 @@
+ 
+ #include "check.h"
+ 
++#ifdef CONFIG_ACORN_PARTITION
+ #include "acorn.h"
++#endif
++#ifdef CONFIG_AMIGA_PARTITION
+ #include "amiga.h"
++#endif
++#ifdef CONFIG_ATARI_PARTITION
+ #include "atari.h"
++#endif
+ #include "ldm.h"
++#ifdef CONFIG_MAC_PARTITION
+ #include "mac.h"
++#endif
+ #include "msdos.h"
++#ifdef CONFIG_OSF_PARTITION
+ #include "osf.h"
++#endif
++#ifdef CONFIG_SGI_PARTITION
+ #include "sgi.h"
++#endif
++#ifdef CONFIG_SUN_PARTITION
+ #include "sun.h"
++#endif
++#ifdef CONFIG_IBM_PARTITION
+ #include "ibm.h"
++#endif
++#ifdef CONFIG_ULTRIX_PARTITION
+ #include "ultrix.h"
++#endif
+ 
+ extern int *blk_size[];
+ 
+diff -Nur linux-ldm-0.0.4.orig/linux/fs/partitions/msdos.h linux-ldm-0.0.4/linux/fs/partitions/msdos.h
+--- linux-ldm-0.0.4.orig/linux/fs/partitions/msdos.h	Thu Jan  1 01:00:00 1970
++++ linux-ldm-0.0.4/linux/fs/partitions/msdos.h	Sat Oct 13 01:26:04 2001
+@@ -0,0 +1,9 @@
++/*
++ *  fs/partitions/msdos.h
++ */
++
++#define MSDOS_LABEL_MAGIC		0xAA55
++
++int msdos_partition(struct gendisk *hd, kdev_t dev,
++		    unsigned long first_sector, int first_part_minor);
++
+diff -Nur linux-ldm-0.0.4.orig/test/Makefile linux-ldm-0.0.4/test/Makefile
+--- linux-ldm-0.0.4.orig/test/Makefile	Thu Jul 26 03:37:45 2001
++++ linux-ldm-0.0.4/test/Makefile	Sat Oct 13 01:26:04 2001
+@@ -11,18 +11,14 @@
+ RM	= rm -f
+ CP	= cp
+ 
+-CFLAGS += -g
+-
++CFLAGS += $(OPT)
+ CFLAGS += -D__KERNEL__
+ 
+ CFLAGS += -Wall
+ CFLAGS += -Wstrict-prototypes
+-CFLAGS += -O2
+-CFLAGS += -fomit-frame-pointer
+ CFLAGS += -fno-strict-aliasing
+ CFLAGS += -pipe
+ CFLAGS += -mpreferred-stack-boundary=2
+-CFLAGS += -march=i386
+ CFLAGS += -D_FILE_OFFSET_BITS=64
+ 
+ all:	$(DEP) $(SRC) $(OUT)
