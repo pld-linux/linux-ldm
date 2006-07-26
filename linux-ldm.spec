@@ -1,8 +1,8 @@
+%define	docver	0.2
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
 Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
 Version:	0.0.8
-%define	docver	0.2
 Release:	2
 License:	GPL
 Group:		Applications/System
@@ -11,7 +11,7 @@ Source0:	http://dl.sourceforge.net/linux-ntfs/%{name}-%{version}.tar.bz2
 Source1:	http://dl.sourceforge.net/linux-ntfs/ldmdoc-%{docver}.tar.bz2
 # Source1-md5:	e232718f1d54bd7de87456d553c9f068
 Patch0:		%{name}-build.patch
-URL:		http://linux-ntfs.sf.net/
+URL:		http://linux-ntfs.sourceforge.net/
 BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
