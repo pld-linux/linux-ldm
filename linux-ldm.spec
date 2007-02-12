@@ -1,6 +1,6 @@
 %define	docver	0.2
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
-Summary(pl):	Narzêdzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
+Summary(pl.UTF-8):   NarzÄ™dzie do partycji LDM ("dynamicznych dyskÃ³w" Windows 2000/XP)
 Name:		linux-ldm
 Version:	0.0.8
 Release:	2
@@ -19,10 +19,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Utility to dump or get information about LDM partitions (Windows
 2000/XP "dynamic disks"). Contains LDM documentation.
 
-%description -l pl
-Narzêdzie do zrzucania danych i uzyskiwania informacji o partycjach
-LDM ("dynamicznych dysków" Windows 2000/XP). Pakiet zawiera
-dokumentacjê do partycji LDM.
+%description -l pl.UTF-8
+NarzÄ™dzie do zrzucania danych i uzyskiwania informacji o partycjach
+LDM ("dynamicznych dyskÃ³w" Windows 2000/XP). Pakiet zawiera
+dokumentacjÄ™ do partycji LDM.
 
 %prep
 %setup -q -a1
