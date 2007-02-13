@@ -1,6 +1,6 @@
 %define	docver	0.2
 Summary:	Logical Disk Manager (Dynamic Disk) Tool
-Summary(pl.UTF-8):   Narzędzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
+Summary(pl.UTF-8):	Narzędzie do partycji LDM ("dynamicznych dysków" Windows 2000/XP)
 Name:		linux-ldm
 Version:	0.0.8
 Release:	2
