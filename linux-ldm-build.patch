@@ -89,3 +89,13 @@ diff -Nur linux-ldm-0.0.7.orig/test/Makefile linux-ldm-0.0.7/test/Makefile
  LDFLAGS=-Xlinker --strip-all
  LIB=
  INC=
+--- linux-ldm-0.0.8/ldmutil/ldm_db.cpp.orig	2001-12-14 20:27:00.000000000 +0100
++++ linux-ldm-0.0.8/ldmutil/ldm_db.cpp	2023-06-20 18:18:20.385442718 +0200
+@@ -21,6 +21,7 @@
+  * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  */
+ 
++#include <cstring>
+ #include <iostream>
+ #include <iomanip>
+ #include <list>
