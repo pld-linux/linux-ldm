@@ -26,7 +26,7 @@ dokumentację do partycji LDM.
 
 %prep
 %setup -q -a1
-%patch0 -p1
+%patch -P0 -p1
 
 %{__mv} ldmdoc-%{docver} ldmdoc
 
